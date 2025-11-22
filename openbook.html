@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>기말시험 안내 (조교용)</title>
+  <title>시험 안내 (조교용)</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -47,7 +47,7 @@
 </head>
 <body>
 
-  <h1>기말시험 안내 (조교용)</h1>
+  <h1>시험 안내 (조교용)</h1>
 
   <!-- 조교용 설정 폼 (위에서 입력하면 아래 안내에 바로 반영) -->
   <div class="form-box">
@@ -68,6 +68,12 @@
       <input id="input-end-time" class="input-field" type="time" value="16:50" />
     </div>
 
+
+    <div class="form-row">
+      <span class="label">시험 장소</span>
+      <input id="input-place" class="input-wide" type="text" placeholder="예: 58-324 / 58-217 동시 사용, 한 칸 띄어 앉기 확인 등" />
+    </div>
+
     <div class="form-row">
       <span class="label">시험지 배부 시각:</span>
       <input id="input-distribute-time" class="input-field" type="time" value="13:55" />
@@ -79,8 +85,8 @@
     </div>
 
     <div class="form-row">
-      <span class="label">추가 메모 (조교용):</span>
-      <input id="input-notes" class="input-wide" type="text" placeholder="예: 58-324 / 58-217 동시 사용, 한 칸 띄어 앉기 확인 등" />
+      <span class="label">시험 메모 (조교용):</span>
+      <input id="input-notes" class="input-wide" type="text" placeholder="시험지 제출 시 신분증 검사 등" />
     </div>
   </div>
 
@@ -111,27 +117,28 @@
     </li>
     <li>
       좌석: <span class="highlight">한 칸씩 띄어 앉기</span>
-      (가능한 한 자리를 비우고 착석해 주세요)
     </li>
     <li>
-      조교 메모:
+      시험 장소:
+      <span class="highlight" id="preview-place"></span>
+    </li>
+    <li>
       <span id="preview-notes"></span>
     </li>
   </ul>
 
   <h2>2. 지참 가능 물품 및 사용 가능 도구</h2>
   <ul>
-    <li>노트북 사용 가능 (단, <span class="highlight">화면 밝기를 최대로</span> 설정)</li>
-    <li>엑셀(Excel), 파이썬(Python) 사용 가능</li>
+    <li>계산기와 엑셀(Excel) 프로그램 외 불가능</li>
+    <li>노트북 사용 시, 엑셀 프로그램만 화면에서 보여야 함 (단, <span class="highlight">화면 밝기를 최대로</span> 설정)</li>
     <li>풀이 과정까지 전부 채점:
       <ul>
         <li>최종 답: <span class="highlight">소수점 둘째 자리까지</span> 작성</li>
         <li>중간 계산: <span class="highlight">소수점 4~6자리</span> 정도까지 유지 권장</li>
       </ul>
     </li>
-    <li>샤프(기계식 연필) 사용 가능</li>
+    <li>볼펜/샤프(기계식 연필) 사용 가능</li>
   </ul>
-
   <h2>3. 오픈북 및 자료 사용 규정</h2>
   <ul>
     <li><span class="highlight">오픈북 시험</span> (인쇄물 사용 가능)</li>
@@ -200,6 +207,7 @@
       const startInput = document.getElementById("input-start-time");
       const endInput = document.getElementById("input-end-time");
       const distInput = document.getElementById("input-distribute-time");
+      const placeInput = document.getElementById("input-place");
       const numQInput = document.getElementById("input-num-questions");
       const notesInput = document.getElementById("input-notes");
 
@@ -221,8 +229,12 @@
       const numQ = numQInput.value || "";
       document.getElementById("preview-num-questions").textContent = numQ || "—";
 
+      const place = placeInput.value || "";
+      document.getElementById("preview-place").textContent = place;
+
       const notes = notesInput.value || "";
       document.getElementById("preview-notes").textContent = notes;
+
     }
 
     document.addEventListener("DOMContentLoaded", function () {
