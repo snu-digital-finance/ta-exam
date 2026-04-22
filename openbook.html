@@ -2,265 +2,137 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>시험 안내 (조교용)</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      line-height: 1.25;
-      max-width: 820px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-    h3 {
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 0px;
-    }
-    .form-box {
-      border: 2px solid #333;
-      padding: 20px;
-      margin-bottom: 30px;
-      background: #fafafa;
-    }
-    .form-row {
-      margin-bottom: 10px;
-    }
-    .label {
-      display: inline-block;
-      width: 160px;
-      font-weight: bold;
-    }
-    .input-field {
-      width: 200px;
-    }
-    .input-wide {
-      width: 500px;
-    }
-    .highlight {
-      font-weight: bold;
-    }
-    strong {
-      font-weight: bold;
-      color:red;
-      font-size:larger;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <main>
+    <h1>시험 안내 (조교용)</h1>
 
-  <h1>시험 안내 (조교용)</h1>
+    <form class="form-box">
+      <h2>조교 설정란</h2>
 
-  <!-- 조교용 설정 폼 (위에서 입력하면 아래 안내에 바로 반영) -->
-  <div class="form-box">
-    <h2>조교 설정란</h2>
+      <div class="form-row">
+        <label class="label" for="exam-date-display">시험 일자 (자동):</label>
+        <span id="exam-date-display"></span>
+      </div>
 
-    <div class="form-row">
-      <span class="label">시험 일자 (자동):</span>
-      <span id="exam-date-display"></span>
-    </div>
+      <div class="form-row">
+        <label class="label" for="input-start-time">시험 시작 시각:</label>
+        <input id="input-start-time" class="input-field" type="time" value="14:00" />
+      </div>
 
-    <div class="form-row">
-      <span class="label">시험 시작 시각:</span>
-      <input id="input-start-time" class="input-field" type="time" value="14:00" />
-    </div>
+      <div class="form-row">
+        <label class="label" for="input-end-time">시험 종료 시각:</label>
+        <input id="input-end-time" class="input-field" type="time" value="16:50" />
+      </div>
 
-    <div class="form-row">
-      <span class="label">시험 종료 시각:</span>
-      <input id="input-end-time" class="input-field" type="time" value="16:50" />
-    </div>
+      <div class="form-row">
+        <label class="label" for="input-place">시험 장소</label>
+        <input id="input-place" class="input-wide" type="text" placeholder="예: 58-324 / 58-217 동시 사용, 한 칸 띄어 앉기 확인 등" />
+      </div>
 
+      <div class="form-row">
+        <label class="label" for="input-distribute-time">시험지 배부 시각:</label>
+        <input id="input-distribute-time" class="input-field" type="time" value="13:55" />
+      </div>
 
-    <div class="form-row">
-      <span class="label">시험 장소</span>
-      <input id="input-place" class="input-wide" type="text" placeholder="예: 58-324 / 58-217 동시 사용, 한 칸 띄어 앉기 확인 등" />
-    </div>
+      <div class="form-row">
+        <label class="label" for="input-num-questions">문항 수:</label>
+        <input id="input-num-questions" class="input-field" type="number" value="7" min="1" />
+      </div>
 
-    <div class="form-row">
-      <span class="label">시험지 배부 시각:</span>
-      <input id="input-distribute-time" class="input-field" type="time" value="13:55" />
-    </div>
+      <div class="form-row">
+        <label class="label" for="input-notes">시험 메모 (조교용):</label>
+        <input id="input-notes" class="input-wide" type="text" placeholder="시험지 제출 시 신분증 검사 등" />
+      </div>
+    </form>
 
-    <div class="form-row">
-      <span class="label">문항 수:</span>
-      <input id="input-num-questions" class="input-field" type="number" value="7" min="1" />
-    </div>
-
-    <div class="form-row">
-      <span class="label">시험 메모 (조교용):</span>
-      <input id="input-notes" class="input-wide" type="text" placeholder="시험지 제출 시 신분증 검사 등" />
-    </div>
-  </div>
-
-  <!-- 실제 안내문 시작 -->
-
-  <h3>1. 시험 일시 및 장소</h3>
-  <ul>
-    <li>
-      시험 일자:
-      <span class="highlight" id="preview-exam-date"></span>
-    </li>
-    <li>
-      시험 시간:
-      <span class="highlight">
-        <span id="preview-start-time">14:00</span>
-        ~
-        <span id="preview-end-time">16:50</span>
-      </span>
-      (<span id="preview-duration">170</span>분)
-    </li>
-    <li>
-      시험 문제: 총
-      <span class="highlight" id="preview-num-questions">7</span>문제
-    </li>
-    <li>
-      시험지 배부:
-      <span class="highlight" id="preview-distribute-time">13:55</span>부터 시작
-    </li>
-    <li>
-      좌석: <span class="highlight">한 칸씩 띄어 앉기</span>
-    </li>
-    <li>
-      시험 장소:
-      <span class="highlight" id="preview-place"></span>
-    </li>
-    <li>
-      <span id="preview-notes"></span>
-    </li>
-  </ul>
-
-  <h3>2. 지참 가능 물품 및 사용 가능 도구</h3>
-  <ul>
-    <li>노트북 사용 시, <span class="highlight">화면 밝기를 최대로</span> 설정</li>
-    <li>풀이 과정까지 전부 채점(<span class="highlight">엑셀로 풀더라도 답안지에 과정을 상세히</span> 기술해야 함):
+    <section>
+      <h3>1. 시험 일시 및 장소</h3>
       <ul>
-        <li>최종 답: <span class="highlight">소수점 둘째 자리까지</span> 작성</li>
-        <li>중간 계산: <span class="highlight">소수점 4~6자리</span> 정도까지 유지 권장</li>
+        <li>
+          시험 일자:
+          <span class="highlight" id="preview-exam-date"></span>
+        </li>
+        <li>
+          시험 시간:
+          <span class="highlight">
+            <span id="preview-start-time">14:00</span>
+            ~
+            <span id="preview-end-time">16:50</span>
+          </span>
+          (<span id="preview-duration">170</span>분)
+        </li>
+        <li>
+          시험 문제: 총
+          <span class="highlight" id="preview-num-questions">7</span>문제
+        </li>
+        <li>
+          시험지 배부:
+          <span class="highlight" id="preview-distribute-time">13:55</span>부터 시작
+        </li>
+        <li>
+          좌석: <span class="highlight">한 칸씩 띄어 앉기</span>
+        </li>
+        <li>
+          시험 장소:
+          <span class="highlight" id="preview-place"></span>
+        </li>
+        <li>
+          <span id="preview-notes"></span>
+        </li>
       </ul>
-    </li>
-    <li>볼펜/샤프(기계식 연필) 사용 가능</li>
-  </ul>
-  <h3>3. 오픈북 및 자료 사용 규정</h3>
-  <ul>
-    <li><span class="highlight">오픈북 시험</span> (인쇄물 사용 가능)</li>
-    <li>허용되는 자료:
+    </section>
+
+    <section>
+      <h3>2. 지참 가능 물품 및 사용 가능 도구</h3>
       <ul>
-        <li>교과서, 강의노트, 본인 정리 노트의 인쇄본 등</li>
-        <li><span class="highlight">로그인 없이 누구나 동일 내용에 접근 가능한 웹사이트</span></li>
+        <li>노트북 사용 시, <span class="highlight">화면 밝기를 최대로</span> 설정</li>
+        <li>풀이 과정까지 전부 채점(<span class="highlight">엑셀로 풀더라도 답안지에 과정을 상세히</span> 기술해야 함):
+          <ul>
+            <li>최종 답: <span class="highlight">소수점 둘째 자리까지</span> 작성</li>
+            <li>중간 계산: <span class="highlight">소수점 4~6자리</span> 정도까지 유지 권장</li>
+          </ul>
+        </li>
+        <li>볼펜/샤프(기계식 연필) 사용 가능</li>
       </ul>
-    </li>
-    <li>사용 불가:
+    </section>
+
+    <section>
+      <h3>3. 오픈북 및 자료 사용 규정</h3>
       <ul>
-        <li>각종 태블릿 기기 (iPad 등, 전자 PDF 열람 포함)</li>
-        <li>메신저, 이메일 등 통신 기능</li>
-        <li>Gen AI 도구 (예: ChatGPT, Gemini 등)</li>
-        <li>상업용 사이트의 사적 정보
-          (로그인 및 개인 계정에 기반한 맞춤형 콘텐츠)</li>
+        <li><span class="highlight">오픈북 시험</span> (인쇄물 사용 가능)</li>
+        <li>허용되는 자료:
+          <ul>
+            <li>교과서, 강의노트, 본인 정리 노트의 인쇄본 등</li>
+            <li><span class="highlight">로그인 없이 누구나 동일 내용에 접근 가능한 웹사이트</span></li>
+          </ul>
+        </li>
+        <li>사용 불가:
+          <ul>
+            <li>각종 태블릿 기기 (iPad 등, 전자 PDF 열람 포함)</li>
+            <li>메신저, 이메일 등 통신 기능</li>
+            <li>Gen AI 도구 (예: ChatGPT, Gemini 등)</li>
+            <li>상업용 사이트의 사적 정보
+              (로그인 및 개인 계정에 기반한 맞춤형 콘텐츠)</li>
+          </ul>
+        </li>
       </ul>
-    </li>
-  </ul>
+    </section>
 
-  <h3>4. 제출 및 퇴실 관련 안내</h3>
-  <ul>
-    <li>답변 언어: <span class="highlight">영문, 국문 모두 가능</span> (혼용도 허용)</li>
-    <li>시험지 및 답안 제출 후 <span class="highlight">중도 퇴실 가능</span> (재입장 불가)</li>
-    <li>질문이 있을 경우 <span class="highlight">조용히 손을 들어</span> 알려 주세요.</li>
-  </ul>
+    <section>
+      <h3>4. 제출 및 퇴실 관련 안내</h3>
+      <ul>
+        <li>답변 언어: <span class="highlight">영문, 국문 모두 가능</span> (혼용도 허용)</li>
+        <li>시험지 및 답안 제출 후 <span class="highlight">중도 퇴실 가능</span> (재입장 불가)</li>
+        <li>질문이 있을 경우 <span class="highlight">조용히 손을 들어</span> 알려 주세요.</li>
+      </ul>
+    </section>
+  </main>
 
-  <script>
-    // 날짜를 "오늘" 기준으로 자동 세팅
-    function setToday() {
-      const today = new Date();
-      const koDate = today.toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        weekday: "short"
-      });
-
-      const dateDisplay = document.getElementById("exam-date-display");
-      const previewExamDate = document.getElementById("preview-exam-date");
-
-      if (dateDisplay) dateDisplay.textContent = koDate;
-      if (previewExamDate) previewExamDate.textContent = koDate;
-    }
-
-    // 시각 문자열에서 "HH:MM" 형식만 깔끔하게
-    function formatTime(value) {
-      if (!value) return "";
-      // value가 "HH:MM" 또는 "HH:MM:SS"인 경우 앞의 5글자만 사용
-      return value.slice(0, 5);
-    }
-
-    // 시작/종료 시각으로 시험 시간(분) 계산
-    function calcDurationMinutes(start, end) {
-      if (!start || !end) return "";
-      const [sh, sm] = start.split(":").map(Number);
-      const [eh, em] = end.split(":").map(Number);
-      if (Number.isNaN(sh) || Number.isNaN(sm) || Number.isNaN(eh) || Number.isNaN(em)) return "";
-      const startMin = sh * 60 + sm;
-      const endMin = eh * 60 + em;
-      const diff = endMin - startMin;
-      return diff > 0 ? diff : "";
-    }
-
-    function syncPreview() {
-      const startInput = document.getElementById("input-start-time");
-      const endInput = document.getElementById("input-end-time");
-      const distInput = document.getElementById("input-distribute-time");
-      const placeInput = document.getElementById("input-place");
-      const numQInput = document.getElementById("input-num-questions");
-      const notesInput = document.getElementById("input-notes");
-
-      const startVal = startInput.value;
-      const endVal = endInput.value;
-      const distVal = distInput.value;
-
-      const startTimeText = formatTime(startVal) || "—";
-      const endTimeText = formatTime(endVal) || "—";
-      const distTimeText = formatTime(distVal) || "—";
-
-      document.getElementById("preview-start-time").textContent = startTimeText;
-      document.getElementById("preview-end-time").textContent = endTimeText;
-      document.getElementById("preview-distribute-time").textContent = distTimeText;
-
-      const dur = calcDurationMinutes(startVal, endVal);
-      document.getElementById("preview-duration").textContent = dur || "—";
-
-      const numQ = numQInput.value || "";
-      document.getElementById("preview-num-questions").textContent = numQ || "—";
-
-      const place = placeInput.value || "";
-      document.getElementById("preview-place").textContent = place;
-
-      const notes = notesInput.value || "";
-      document.getElementById("preview-notes").textContent = notes;
-
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      setToday();
-      syncPreview();
-
-      const inputs = [
-        "input-start-time",
-        "input-end-time",
-        "input-distribute-time",
-        "input-num-questions",
-        "input-place",
-        "input-notes"
-      ];
-
-      inputs.forEach(function (id) {
-        const el = document.getElementById(id);
-        if (el) {
-          el.addEventListener("input", syncPreview);
-        }
-      });
-    });
-  </script>
+  <script src="app.js"></script>
 
 </body>
 </html>

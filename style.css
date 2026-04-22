@@ -1,0 +1,57 @@
+/* Base styles */
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.25;
+  max-width: 820px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+/* Headings */
+h1 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+h3 {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0;
+}
+
+/* Form styles */
+.form-box {
+  border: 2px solid #333;
+  padding: 20px;
+  margin-bottom: 30px;
+  background: #fafafa;
+}
+
+.form-row {
+  margin-bottom: 10px;
+}
+
+.label {
+  display: inline-block;
+  width: 160px;
+  font-weight: bold;
+}
+
+/* Input fields */
+.input-field {
+  width: 200px;
+}
+
+.input-wide {
+  width: 500px;
+}
+
+/* Text styling */
+.highlight {
+  font-weight: bold;
+}
+
+strong {
+  font-weight: bold;
+  color: red;
+  font-size: larger;
+}
