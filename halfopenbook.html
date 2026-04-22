@@ -89,9 +89,11 @@
     <section>
       <h3>2. 지참 가능 물품 및 사용 가능 도구</h3>
       <ul>
-        <li>계산기와 엑셀(Excel) 프로그램 외 불가능</li>
-        <li>노트북 사용 시, 엑셀 프로그램만 화면에서 보여야 함 (단, <span class="highlight">화면 밝기를 최대로</span> 설정)</li>
-        <li>엑셀 사용 시, <strong>새 파일</strong>로만 시작: <strong>기존 파일 활용 적발 시 0점 처리</strong></li>
+        <li>계산기 (재무용, 공학용)</li>
+        <li>노트북 사용 시, <span class="highlight">화면 밝기를 최대로</span> 설정</li>
+        <li>엑셀 프로그램 사용 시, <strong>새 파일</strong>로만 시작: <strong>기존 파일 활용 적발 시 0점 처리</strong></li>
+        <li>주교재, 강의자료, PS의 경우, 전자파일 및 종이출력본 필기 유무 관계없이 허용</li>
+        <li>단, <strong>ppt, pdf, xlsx</strong> 파일만 허용</li>
         <li>풀이 과정까지 전부 채점:
           <ul>
             <li>최종 답: <span class="highlight">소수점 둘째 자리까지</span> 작성</li>
@@ -112,7 +114,87 @@
     </section>
   </main>
 
-  <script src="app.js"></script>
+  <script>
+    const INPUT_IDS = [
+      "input-start-time",
+      "input-end-time",
+      "input-distribute-time",
+      "input-num-questions",
+      "input-place",
+      "input-notes"
+    ];
+
+    const INPUT_ELEMENTS = {};
+
+    function formatTime(value) {
+      return value ? value.slice(0, 5) : "";
+    }
+
+    function calcDurationMinutes(start, end) {
+      if (!start || !end) return "";
+      const [sh, sm] = start.split(":").map(Number);
+      const [eh, em] = end.split(":").map(Number);
+      if (Number.isNaN(sh) || Number.isNaN(sm) || Number.isNaN(eh) || Number.isNaN(em)) return "";
+      const startMin = sh * 60 + sm;
+      const endMin = eh * 60 + em;
+      return endMin - startMin > 0 ? endMin - startMin : "";
+    }
+
+    function setToday() {
+      const today = new Date();
+      const koDate = today.toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "short"
+      });
+
+      const dateDisplay = document.getElementById("exam-date-display");
+      const previewExamDate = document.getElementById("preview-exam-date");
+
+      if (dateDisplay) dateDisplay.textContent = koDate;
+      if (previewExamDate) previewExamDate.textContent = koDate;
+    }
+
+    function syncPreview() {
+      const start = INPUT_ELEMENTS["input-start-time"]?.value;
+      const end = INPUT_ELEMENTS["input-end-time"]?.value;
+      const dist = INPUT_ELEMENTS["input-distribute-time"]?.value;
+      const place = INPUT_ELEMENTS["input-place"]?.value || "";
+      const notes = INPUT_ELEMENTS["input-notes"]?.value || "";
+      const numQ = INPUT_ELEMENTS["input-num-questions"]?.value || "";
+
+      const previewMap = {
+        "preview-start-time": formatTime(start) || "—",
+        "preview-end-time": formatTime(end) || "—",
+        "preview-distribute-time": formatTime(dist) || "—",
+        "preview-duration": calcDurationMinutes(start, end) || "—",
+        "preview-num-questions": numQ || "—",
+        "preview-place": place,
+        "preview-notes": notes
+      };
+
+      Object.entries(previewMap).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = value;
+      });
+    }
+
+    function init() {
+      INPUT_IDS.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          INPUT_ELEMENTS[id] = element;
+          element.addEventListener("input", syncPreview);
+        }
+      });
+
+      setToday();
+      syncPreview();
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
 
 </body>
 </html>
